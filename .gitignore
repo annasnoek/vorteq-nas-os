@@ -427,3 +427,11 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Linux/bootc
+cosign.key
+_build_*
+output
+_build-*/**
+*_chunkah_*
+*_rpm-ostree_*
