@@ -1,0 +1,23 @@
+[Unit]
+Description=A Cockpit container
+
+[Container]
+Image=quay.io/cockpit/ws
+AutoUpdate=registry
+Network=host
+
+# Mount de sockets van de host (nodig om het OS te beheren)
+# cockpit wil via systemd weten welke services op je host draaien
+Volume=/run/systemd/system:/run/systemd/system
+# cockpit wil met de OS van je computer kunnen praten, bijv om het CPU-gebruik uit te lezen of de harde schijven/pools bijv te bekijken
+Volume=/var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+
+# Cockpit is stateless en slaat geen grote data op
+
+[Service]
+# Restart service when sleep finishes
+Restart=always
+
+[Install]
+# Start by default on boot
+WantedBy=multi-user.target default.target
