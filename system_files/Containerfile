@@ -38,7 +38,10 @@ RUN dnf install -y \
     podman \
     shadow-utils \
     sudo \
-    && dnf clean all
+    && dnf clean all 
+
+RUN mkdir -p /etc/containers/systemd
+COPY system_files/cockpit.container /etc/containers/systemd/
 
 # 2. Maak de gebruiker aan en stel de wachtwoorden expliciet in
 RUN useradd -m -G wheel anna && \
