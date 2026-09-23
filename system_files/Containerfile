@@ -4,7 +4,7 @@
 #COPY system_files /system_files
 
 # Base Image
-FROM quay.io/bootc-devel/fedora-bootc-43-minimal-plus
+FROM quay.io/fedora/fedora-bootc:latest 
 
 # Fedora base image (according to ublue): quay.io/fedora/fedora-bootc:44 
 
@@ -30,21 +30,20 @@ FROM quay.io/bootc-devel/fedora-bootc-43-minimal-plus
 #    --mount=type=tmpfs,dst=/tmp \
 #    /ctx/build.sh 
 
+# Stel de juiste Hostname in voor je NAS
+RUN echo "fedora-nas" > /etc/hostname
+
+# 1. Zorg dat shadow-utils geïnstalleerd is
 RUN dnf install -y \
     podman \
-#    shadow-utils \
-#    sudo \
+    shadow-utils \
+    sudo \
     && dnf clean all
 
-### LINTING
-## Verify final image and contents are correct.
-RUN bootc container lint
-
-# TODO: maak flexibel, haal deze test commando's weg
-# --- WACHTWOORDEN EN GEBRUIKERS INSTELLEN ---
-# Stel root-wachtwoord in op 'root'
-RUN echo "root:root" | chpasswd
-
-# Maak gebruiker 'anna' aan met wachtwoord 'anna' en geef sudo rechten (wheel)
+# 2. Maak de gebruiker aan en stel de wachtwoorden expliciet in
 RUN useradd -m -G wheel anna && \
-    echo "anna:anna" | chpasswd
+    echo "root:root" | chpasswd --crypt-method SHA512 && \
+    echo "anna:anna" | chpasswd --crypt-method SHA512
+
+# 3. Zorg dat SELinux de bestandzichten herstelt voor de shadow-bestanden
+RUN restorecon -v /etc/shadow /etc/passwd
