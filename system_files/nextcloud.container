@@ -1,0 +1,21 @@
+[Unit]
+Description=A Nextcloud container
+
+[Container]
+Image=docker.io/library/nextcloud
+AutoUpdate=registry
+PublishPort=8080:80
+
+# Nextcloud & data moet in zijn geheel op de HDD worden geinstalleerd
+Volume=/mnt/storage/nextcloud:/var/www/html
+
+# Schakel de cgroup-controle uit voor nested podman
+PodmanArgs=--cgroupns=host --cgroup-manager=cgroupfs
+
+[Service]
+# Restart service when sleep finishes
+Restart=always
+
+[Install]
+# Start by default on boot
+WantedBy=multi-user.target default.target

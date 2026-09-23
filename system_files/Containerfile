@@ -39,9 +39,13 @@ RUN dnf install -y \
     shadow-utils \
     sudo \
     && dnf clean all 
-
+    
+RUN mkdir -p /var/mnt/storage/nextcloud
+# QUADLET-FILES
 RUN mkdir -p /etc/containers/systemd
 COPY system_files/cockpit.container /etc/containers/systemd/
+# TEST NEXTCLOUD HARD INSTALL
+COPY system_files/nextcloud.container /etc/containers/systemd/
 
 # 2. Maak de gebruiker aan en stel de wachtwoorden expliciet in
 RUN useradd -m -G wheel anna && \
