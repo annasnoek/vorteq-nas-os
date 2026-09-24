@@ -1,5 +1,7 @@
 [Unit]
-Description=A Cockpit container
+Description=Cockpit Web Service
+After=network-online.target
+Wants=network-online.target
 
 [Container]
 Image=quay.io/cockpit/ws
@@ -11,6 +13,10 @@ Network=host
 Volume=/run/systemd/system:/run/systemd/system
 # cockpit wil met de OS van je computer kunnen praten, bijv om het CPU-gebruik uit te lezen of de harde schijven/pools bijv te bekijken
 Volume=/var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+# conf-bestand
+Volume=/etc/cockpit:/etc/cockpit:Z
+
+Environment=CONTAINER_HOST=unix:///run/podman/podman.sock
 
 # Cockpit is stateless en slaat geen grote data op
 
