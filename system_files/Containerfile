@@ -38,10 +38,16 @@ RUN dnf install -y \
     podman \
     shadow-utils \
     sudo \
+    cockpit-bridge \
+    cockpit-system \
+    cockpit-podman \
+    cockpit-storaged \
     && dnf clean all 
 
 RUN mkdir -p /etc/containers/systemd
-COPY system_files/cockpit.container /etc/containers/systemd/
+COPY system_files/cockpit.container /etc/containers/systemd/cockpit.container
+# Kopieer cockpit.conf naar OS
+COPY system_files/cockpit.conf /etc/cockpit/cockpit.conf
 
 # 2. Maak de gebruiker aan en stel de wachtwoorden expliciet in
 RUN useradd -m -G wheel anna && \
