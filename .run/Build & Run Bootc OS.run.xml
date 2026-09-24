@@ -6,6 +6,7 @@
         <option name="containerName" value="vorteq-nas-os-test" />
         <option name="contextFolderPath" value="." />
         <option name="commandLineOptions" value="--privileged --network=host" />
+        <option name="sourceFilePath" value="system_files/Containerfile" />
       </settings>
     </deployment>
     <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
